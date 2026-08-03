@@ -6,11 +6,11 @@ const pageUrl = new URL("../app/page.tsx", import.meta.url);
 
 test("mantém a ordem principal solicitada", async () => {
   const page = await readFile(pageUrl, "utf8");
-  const sections = ["hero-section", "showcase-section", "audience-section", "kit-section", "bonus-section", "plans-section"];
+  const sections = ["hero-section", "audience-section", "showcase-section", "kit-section", "bonus-section", "plans-section"];
   const positions = sections.map((name) => page.indexOf(`className=\"${name}`));
   assert.ok(positions.every((position) => position >= 0));
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
-  assert.match(page, /Nunca mais fique sem saber qual brincadeira fazer na festa/);
+  assert.match(page, /\+200 Brincadeiras Prontas/);
   assert.match(page, /QUERO TER AS BRINCADEIRAS PRONTAS/);
 });
 

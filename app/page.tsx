@@ -148,8 +148,8 @@ export default function Home() {
       <section className="hero-section" id="inicio">
         <div className="hero-copy">
           <span className="brand-pill">KIT DO RECREADOR · MATERIAL DIGITAL EM PDF</span>
-          <h1>Nunca mais fique sem saber qual brincadeira fazer na festa.</h1>
-          <p className="hero-subheadline">Tenha 200 brincadeiras prontas para consultar pelo celular e aplicar sem perder tempo pesquisando ideias soltas na internet.</p>
+          <h1>+200 Brincadeiras Prontas<br />para saber o que fazer e conduzir<br />uma festa com mais segurança</h1>
+          <p className="hero-subheadline">Um material visual e direto para quem trabalha com recreação infantil e quer saber qual brincadeira aplicar, o que preparar e como conduzir cada momento da festa.</p>
           <p className="hero-support">Escolha pela categoria, confira a idade, o material, o tempo e siga o passo a passo.</p>
         </div>
         <div className="hero-mockup">
@@ -157,6 +157,16 @@ export default function Home() {
         </div>
         <a className="primary-button hero-cta" href="#planos">QUERO TER AS BRINCADEIRAS PRONTAS <span aria-hidden="true">↓</span></a>
         <p className="hero-practicality">Acesso imediato <span>•</span> Material em PDF <span>•</span> Consulte pelo celular</p>
+      </section>
+
+      <section className="audience-section section-shell">
+        <div className="section-heading compact-heading">
+          <span className="section-kicker">PARA QUEM É</span>
+          <h2>Este material é para você que…</h2>
+        </div>
+        <div className="audience-grid">
+          {audiences.map((item) => <article className="audience-card" key={item.title}><span className="icon-box"><Icon name={item.icon} /></span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
+        </div>
       </section>
 
       <section className="showcase-section section-shell" aria-labelledby="por-dentro">
@@ -177,16 +187,6 @@ export default function Home() {
               </div>
             </div>
           ))}
-        </div>
-      </section>
-
-      <section className="audience-section section-shell">
-        <div className="section-heading compact-heading">
-          <span className="section-kicker">PARA QUEM É</span>
-          <h2>Este material é para você que…</h2>
-        </div>
-        <div className="audience-grid">
-          {audiences.map((item) => <article className="audience-card" key={item.title}><span className="icon-box"><Icon name={item.icon} /></span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
         </div>
       </section>
 
