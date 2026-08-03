@@ -78,18 +78,13 @@ button { cursor: pointer; }
 .included-badge { display: inline-block; margin-top: 10px; padding: 5px 8px; border-radius: 7px; color: var(--blue); background: rgb(21 101 192 / 8%); font-size: 9px; font-weight: 700; }
 
 .plans-section { background: rgb(21 101 192 / 5%); }
-.special-offer-box { max-width: 900px; margin: 0 auto 58px; padding: 35px 20px 31px; border: 2px solid var(--gold); border-radius: 24px; color: var(--white); background: var(--blue-dark); box-shadow: 0 18px 38px rgb(11 42 74 / 18%); text-align: center; }
-.special-offer-box .section-kicker { color: var(--gold); }
-.special-offer-box h2 { max-width: 720px; margin: 10px auto 12px; color: var(--white); font-size: clamp(30px, 7vw, 58px); font-weight: 800; line-height: .98; letter-spacing: -.045em; text-transform: uppercase; }
-.special-offer-box h2 u { text-decoration-color: var(--gold); text-decoration-thickness: .09em; text-underline-offset: .13em; }
-.special-offer-box .timer-heading { margin: 0 0 12px; color: var(--white); font-size: 14px; font-weight: 700; }
+.special-offer-box { max-width: 680px; margin: 0 auto 58px; padding: 29px 20px 26px; border: 2px solid var(--gold); border-radius: 24px; color: var(--white); background: var(--blue-dark); box-shadow: 0 18px 38px rgb(11 42 74 / 18%); text-align: center; }
+.special-offer-box .timer-heading { margin: 0 0 15px; color: var(--white); font-size: 15px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .offer-timer { display: flex; align-items: flex-start; justify-content: center; gap: clamp(5px, 2vw, 18px); margin: 0 auto 15px; }
 .timer-unit { display: grid; gap: 6px; }
 .timer-unit strong { min-width: clamp(54px, 13vw, 92px); display: grid; place-items: center; padding: 8px 5px; border: 1px solid rgb(255 255 255 / 24%); border-radius: 10px; color: var(--white); background: rgb(5 34 63 / 74%); box-shadow: inset 0 -1px 0 rgb(255 255 255 / 10%); font-size: clamp(39px, 10vw, 68px); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1; }
 .timer-unit small { color: rgb(255 255 255 / 73%); font-size: 9px; font-weight: 800; letter-spacing: .1em; }
 .offer-timer > i { padding-top: clamp(8px, 2vw, 19px); color: var(--gold); font-size: clamp(32px, 8vw, 54px); font-style: normal; font-weight: 800; line-height: 1; }
-.special-offer-box p { margin: 0; color: rgb(255 255 255 / 76%); font-size: 13px; }
-.special-offer-box .primary-button { margin-top: 18px; }
 .plans-grid { max-width: 1040px; display: grid; grid-template-columns: 1fr; gap: 30px; margin: 0 auto; }
 .plan-card { position: relative; padding: 28px 21px; border-radius: 24px; background: var(--white); box-shadow: 0 18px 52px rgb(11 42 74 / 10%); }
 .basic-plan { border: 1px solid rgb(21 101 192 / 14%); }

@@ -224,9 +224,7 @@ export default function Home() {
       <section className="plans-section section-shell" id="planos">
         {specialOfferActive && (
           <div className="special-offer-box" id="oferta-especial">
-            <span className="section-kicker">DECIDA O SEU PLANO</span>
-            <h2>Escolha o <u>melhor plano</u><br />para você</h2>
-            <p className="timer-heading">Oferta limitada – termina em:</p>
+            <p className="timer-heading">Oferta por tempo limitado</p>
             <div className="offer-timer" aria-label={`Oferta termina em ${timeLabel}`}>
               <div className="timer-unit"><strong>{timeParts.hours}</strong><small>HORAS</small></div>
               <i aria-hidden="true">:</i>
@@ -234,8 +232,6 @@ export default function Home() {
               <i aria-hidden="true">:</i>
               <div className="timer-unit"><strong>{timeParts.seconds}</strong><small>SEGUNDOS</small></div>
             </div>
-            <p>Plano Completo por R$ 19,90 durante esse prazo.</p>
-            <a className="primary-button" href={SPECIAL_COMPLETE_CHECKOUT_URL}>QUERO APROVEITAR POR R$ 19,90</a>
           </div>
         )}
         <div className="section-heading">
