@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = incomingHeaders.get("x-forwarded-proto") ?? (host.startsWith("localhost") ? "http" : "https");
   const base = new URL(`${protocol}://${host}`);
   const title = "Kit do Recreador | +200 Brincadeiras Prontas";
-  const description = "Mais de 200 brincadeiras e dinâmicas organizadas para você abrir, escolher e aplicar na próxima festa.";
+  const description = "Tenha 200 brincadeiras prontas, organizadas e fáceis de aplicar em qualquer festa infantil.";
 
   return {
     metadataBase: base,
@@ -19,13 +19,11 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "website",
       url: base,
-      images: [{ url: new URL("/og-kit-recreador.png", base), width: 1536, height: 1024, alt: "Kit do Recreador — mais de 200 brincadeiras prontas" }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [new URL("/og-kit-recreador.png", base)],
     },
   };
 }
@@ -33,6 +31,11 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="pt-BR">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+      </head>
       <body>{children}</body>
     </html>
   );
