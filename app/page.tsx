@@ -140,7 +140,7 @@ export default function Home() {
       <div className="offer-bar" role="region" aria-label="Oferta especial do Plano Completo">
         {specialOfferActive ? (
           <div className="offer-bar-inner">
-            <p className="offer-bar-message"><strong>OFERTA EXCLUSIVA APENAS HOJE</strong><span aria-hidden="true">•</span><b>FALTAM 25 MINUTOS</b></p>
+            <p className="offer-bar-message"><strong>OFERTA EXCLUSIVA APENAS HOJE</strong><span aria-hidden="true">•</span><b>FALTAM <time aria-live="off">{timeLabel}</time></b></p>
           </div>
         ) : <p className="offer-ended">Oferta especial encerrada</p>}
       </div>
