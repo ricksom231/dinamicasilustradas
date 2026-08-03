@@ -166,7 +166,11 @@ export default function Home() {
       <section className="hero-section" id="inicio">
         <div className="hero-copy">
           <span className="brand-pill">KIT DO RECREADOR · MATERIAL DIGITAL EM PDF</span>
-          <h1><span className="hero-highlight">+200 Brincadeiras Prontas</span><br />para saber o que fazer e conduzir<br />uma festa com mais segurança</h1>
+          <h1>
+            <span className="hero-line hero-highlight">+200 Brincadeiras Prontas</span>
+            <span className="hero-line">para saber o que fazer e conduzir</span>
+            <span className="hero-line">uma festa com mais segurança</span>
+          </h1>
           <p className="hero-subheadline">Um material visual e direto para quem trabalha com recreação infantil e quer saber qual brincadeira aplicar, o que preparar e como conduzir cada momento da festa.</p>
           <p className="hero-support">Escolha pela categoria, confira a idade, o material, o tempo e siga o passo a passo.</p>
         </div>

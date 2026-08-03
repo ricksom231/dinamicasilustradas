@@ -29,7 +29,8 @@ button { cursor: pointer; }
 .hero-section { overflow: hidden; padding: 48px 20px 62px; color: var(--white); background: var(--blue); text-align: center; }
 .hero-copy { max-width: 940px; margin: 0 auto; }
 .brand-pill { display: inline-block; padding: .55rem 1rem; border: 0; border-radius: 999px; color: var(--white); background: var(--blue-dark); font-size: clamp(.62rem, 1.5vw, .75rem); font-weight: 800; letter-spacing: .08em; line-height: 1; text-transform: uppercase; }
-.hero-section h1 { max-width: 1050px; margin: 20px auto 15px; font-size: clamp(2.25rem, 5.3vw, 4.75rem); font-weight: 900; line-height: .98; letter-spacing: -.045em; text-wrap: balance; }
+.hero-section h1 { max-width: 1050px; margin: 20px auto 15px; font-size: clamp(1.18rem, 5.3vw, 4.75rem); font-weight: 900; line-height: .98; letter-spacing: -.045em; text-wrap: balance; }
+.hero-line { display: block; white-space: nowrap; }
 .hero-highlight { color: var(--gold); }
 .hero-subheadline { max-width: 780px; margin: 0 auto; color: rgb(255 255 255 / 90%); font-size: clamp(1rem, 1.5vw, 1.3rem); font-weight: 400; line-height: 1.5; letter-spacing: -.01em; text-wrap: balance; }
 .hero-support { max-width: 690px; margin: 13px auto 0; color: rgb(255 255 255 / 72%); font-size: 13px; font-weight: 500; }
@@ -167,6 +168,7 @@ footer strong { color: var(--white); }
 }
 
 @media (max-width: 639px) {
+  .hero-section h1 { font-size: clamp(1.18rem, 5.5vw, 2.25rem); letter-spacing: -.055em; }
   .offer-bar-message { gap: 7px; font-size: 10px; }
   .offer-bar-message strong, .offer-bar-message b { font-size: 9px; }
 }
