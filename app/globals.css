@@ -30,6 +30,7 @@ button { cursor: pointer; }
 .hero-copy { max-width: 940px; margin: 0 auto; }
 .brand-pill { display: inline-block; padding: 7px 13px; border: 1px solid rgb(255 255 255 / 35%); border-radius: 999px; color: var(--white); font-size: 9px; font-weight: 600; letter-spacing: .1em; }
 .hero-section h1 { max-width: 920px; margin: 20px auto 15px; font-size: clamp(39px, 9vw, 76px); line-height: 1.04; letter-spacing: -.055em; }
+.hero-highlight { color: var(--gold); }
 .hero-subheadline { max-width: 760px; margin: 0 auto; color: rgb(255 255 255 / 90%); font-size: clamp(16px, 3.8vw, 21px); }
 .hero-support { max-width: 690px; margin: 13px auto 0; color: rgb(255 255 255 / 72%); font-size: 13px; }
 .hero-mockup { width: min(800px, 100%); min-height: 270px; display: grid; place-items: center; margin: 28px auto 0; }
@@ -143,6 +144,9 @@ footer strong { color: var(--white); }
 .modal-accept { color: var(--ink); background: var(--gold); }
 .modal-decline { margin-top: 10px; color: rgb(255 255 255 / 76%); border: 1px solid rgb(255 255 255 / 28%); }
 
+.reveal-ready .scroll-reveal { opacity: 0; transform: translateY(28px); transition: opacity .5s ease, transform .5s ease; }
+.reveal-ready .scroll-reveal.is-visible { opacity: 1; transform: translateY(0); }
+
 @media (min-width: 640px) {
   .section-shell { padding: 90px 28px; }
   .hero-section { padding: 65px 28px 82px; }
@@ -171,4 +175,5 @@ footer strong { color: var(--white); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
   .marquee-track { animation-play-state: paused !important; }
+  .reveal-ready .scroll-reveal { opacity: 1; transform: none; }
 }

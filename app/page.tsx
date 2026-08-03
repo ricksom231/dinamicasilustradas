@@ -135,6 +135,24 @@ export default function Home() {
     };
   }, [modalOpen]);
 
+  useEffect(() => {
+    const targets = Array.from(document.querySelectorAll<HTMLElement>(".scroll-reveal"));
+    document.documentElement.classList.add("reveal-ready");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      targets.forEach((target) => target.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12 });
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main>
       <div className="offer-bar" role="region" aria-label="Oferta especial do Plano Completo">
@@ -148,7 +166,7 @@ export default function Home() {
       <section className="hero-section" id="inicio">
         <div className="hero-copy">
           <span className="brand-pill">KIT DO RECREADOR · MATERIAL DIGITAL EM PDF</span>
-          <h1>+200 Brincadeiras Prontas<br />para saber o que fazer e conduzir<br />uma festa com mais segurança</h1>
+          <h1><span className="hero-highlight">+200 Brincadeiras Prontas</span><br />para saber o que fazer e conduzir<br />uma festa com mais segurança</h1>
           <p className="hero-subheadline">Um material visual e direto para quem trabalha com recreação infantil e quer saber qual brincadeira aplicar, o que preparar e como conduzir cada momento da festa.</p>
           <p className="hero-support">Escolha pela categoria, confira a idade, o material, o tempo e siga o passo a passo.</p>
         </div>
@@ -159,7 +177,7 @@ export default function Home() {
         <p className="hero-practicality">Acesso imediato <span>•</span> Material em PDF <span>•</span> Consulte pelo celular</p>
       </section>
 
-      <section className="audience-section section-shell">
+      <section className="audience-section section-shell scroll-reveal">
         <div className="section-heading compact-heading">
           <span className="section-kicker">PARA QUEM É</span>
           <h2>Este material é para você que…</h2>
@@ -169,7 +187,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="showcase-section section-shell" aria-labelledby="por-dentro">
+      <section className="showcase-section section-shell scroll-reveal" aria-labelledby="por-dentro">
         <div className="section-heading">
           <span className="section-kicker">POR DENTRO DO KIT</span>
           <h2 id="por-dentro">Veja como o material é por dentro</h2>
@@ -190,7 +208,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="kit-section section-shell">
+      <section className="kit-section section-shell scroll-reveal">
         <div className="section-heading">
           <span className="section-kicker">O QUE VEM NAS 200 BRINCADEIRAS</span>
           <h2>Abra o PDF, escolha uma categoria e encontre uma brincadeira pronta.</h2>
@@ -204,7 +222,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bonus-section section-shell">
+      <section className="bonus-section section-shell scroll-reveal">
         <div className="section-heading">
           <span className="exclusive-badge">EXCLUSIVO DO PLANO COMPLETO</span>
           <h2>No Plano Completo, você ainda recebe:</h2>
@@ -220,7 +238,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="plans-section section-shell" id="planos">
+      <section className="plans-section section-shell scroll-reveal" id="planos">
         {specialOfferActive && (
           <div className="special-offer-box" id="oferta-especial">
             <p className="timer-heading">Oferta por tempo limitado</p>

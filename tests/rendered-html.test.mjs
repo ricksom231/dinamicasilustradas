@@ -11,6 +11,8 @@ test("mantém a ordem principal solicitada", async () => {
   assert.ok(positions.every((position) => position >= 0));
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
   assert.match(page, /\+200 Brincadeiras Prontas/);
+  assert.match(page, /hero-highlight/);
+  assert.match(page, /IntersectionObserver/);
   assert.match(page, /QUERO TER AS BRINCADEIRAS PRONTAS/);
 });
 
