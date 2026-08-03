@@ -6,7 +6,7 @@ const BASIC_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-basico-200-din
 const COMPLETE_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-completo-250-dinamicas-para-recreadores";
 const SPECIAL_COMPLETE_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-completo-200-dinamicas-para-recreadores";
 const OFFER_DURATION_MINUTES = 25;
-const OFFER_END_STORAGE_KEY = "kit-do-recreador-special-offer-end";
+const OFFER_END_STORAGE_KEY = "kit-do-recreador-special-offer-end-v2-25min";
 
 const productMockup = "https://i.postimg.cc/bwhXDFcZ/imagem-2026-08-03-000720349-removebg-preview.png";
 const completePlanImage = "https://i.postimg.cc/m2YK7NSc/imagem-2026-08-03-014301691.png";
@@ -140,8 +140,7 @@ export default function Home() {
       <div className="offer-bar" role="region" aria-label="Oferta especial do Plano Completo">
         {specialOfferActive ? (
           <div className="offer-bar-inner">
-            <p><span className="offer-bar-desktop">Oferta do Plano Completo por R$ 19,90 termina em:</span><span className="offer-bar-mobile">Completo por R$ 19,90</span> <time aria-live="off">{timeLabel}</time></p>
-            <a href="#oferta-especial">APROVEITAR OFERTA</a>
+            <p className="offer-bar-message"><strong>OFERTA EXCLUSIVA APENAS HOJE</strong><span aria-hidden="true">•</span><b>FALTAM 25 MINUTOS</b></p>
           </div>
         ) : <p className="offer-ended">Oferta especial encerrada</p>}
       </div>

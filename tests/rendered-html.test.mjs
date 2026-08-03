@@ -43,6 +43,8 @@ test("mantém os três fluxos de checkout separados", async () => {
 test("usa um cronômetro persistente e não reinicia depois do vencimento", async () => {
   const page = await readFile(pageUrl, "utf8");
   assert.match(page, /const OFFER_DURATION_MINUTES = 25/);
+  assert.match(page, /OFERTA EXCLUSIVA APENAS HOJE/);
+  assert.match(page, /FALTAM 25 MINUTOS/);
   assert.match(page, /localStorage\.getItem\(OFFER_END_STORAGE_KEY\)/);
   assert.match(page, /if \(!storedEnd\) window\.localStorage\.setItem/);
   assert.match(page, /specialOfferActive = hasSpecialCompleteCheckout && offerSeconds > 0/);
