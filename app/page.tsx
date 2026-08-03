@@ -81,14 +81,22 @@ function formatOfferTime(totalSeconds: number) {
   return `${minutes}:${seconds}`;
 }
 
+function formatOfferParts(totalSeconds: number) {
+  return {
+    hours: Math.floor(totalSeconds / 3600).toString().padStart(2, "0"),
+    minutes: (Math.floor(totalSeconds / 60) % 60).toString().padStart(2, "0"),
+    seconds: (totalSeconds % 60).toString().padStart(2, "0"),
+  };
+}
+
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const [offerSeconds, setOfferSeconds] = useState(OFFER_DURATION_MINUTES * 60);
   const modalRef = useRef<HTMLDivElement>(null);
-  const carouselRefs = useRef<Array<HTMLDivElement | null>>([]);
   const hasSpecialCompleteCheckout = SPECIAL_COMPLETE_CHECKOUT_URL.startsWith("https://");
   const specialOfferActive = hasSpecialCompleteCheckout && offerSeconds > 0;
   const timeLabel = formatOfferTime(offerSeconds);
+  const timeParts = formatOfferParts(offerSeconds);
 
   useEffect(() => {
     const storedEnd = Number(window.localStorage.getItem(OFFER_END_STORAGE_KEY));
@@ -102,33 +110,6 @@ export default function Home() {
     updateTimer();
     const interval = window.setInterval(updateTimer, 1000);
     return () => window.clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let animationFrame = 0;
-    let lastFrame = performance.now();
-    const initialized = new WeakSet<HTMLDivElement>();
-
-    const animate = (now: number) => {
-      const distance = Math.min((now - lastFrame) * 0.035, 2.2);
-      lastFrame = now;
-      carouselRefs.current.forEach((viewport, index) => {
-        if (!viewport) return;
-        const halfWidth = viewport.scrollWidth / 2;
-        if (!halfWidth) return;
-        if (!initialized.has(viewport)) {
-          viewport.scrollLeft = index === 1 ? halfWidth : 0;
-          initialized.add(viewport);
-        }
-        viewport.scrollLeft += index === 0 ? distance : -distance;
-        if (viewport.scrollLeft >= halfWidth) viewport.scrollLeft -= halfWidth;
-        if (viewport.scrollLeft <= 0) viewport.scrollLeft += halfWidth;
-      });
-      animationFrame = window.requestAnimationFrame(animate);
-    };
-    animationFrame = window.requestAnimationFrame(animate);
-    return () => window.cancelAnimationFrame(animationFrame);
   }, []);
 
   useEffect(() => {
@@ -187,12 +168,8 @@ export default function Home() {
         </div>
         <div className="infinite-carousel" aria-label="Páginas do material em movimento contínuo">
           {carouselRows.map((row, rowIndex) => (
-            <div
-              className="marquee-viewport"
-              key={rowIndex}
-              ref={(element) => { carouselRefs.current[rowIndex] = element; }}
-            >
-              <div className="marquee-track">
+            <div className="marquee-viewport" key={rowIndex}>
+              <div className={`marquee-track ${rowIndex === 0 ? "move-left" : "move-right"}`}>
                 {[...row, ...row].map((image, imageIndex) => (
                   <div className="marquee-image" key={`${rowIndex}-${imageIndex}`}>
                     <img src={image} alt="Página interna do Kit do Recreador" loading="lazy" decoding="async" />
@@ -247,10 +224,17 @@ export default function Home() {
       <section className="plans-section section-shell" id="planos">
         {specialOfferActive && (
           <div className="special-offer-box" id="oferta-especial">
-            <span className="section-kicker">OFERTA ESPECIAL</span>
-            <h2>Seu acesso ao Plano Completo por R$ 19,90 está reservado por:</h2>
-            <time aria-live="off">{timeLabel}</time>
-            <p>Depois do prazo, o Plano Completo volta para R$ 27,90.</p>
+            <span className="section-kicker">DECIDA O SEU PLANO</span>
+            <h2>Escolha o <u>melhor plano</u><br />para você</h2>
+            <p className="timer-heading">Oferta limitada – termina em:</p>
+            <div className="offer-timer" aria-label={`Oferta termina em ${timeLabel}`}>
+              <div className="timer-unit"><strong>{timeParts.hours}</strong><small>HORAS</small></div>
+              <i aria-hidden="true">:</i>
+              <div className="timer-unit"><strong>{timeParts.minutes}</strong><small>MINUTOS</small></div>
+              <i aria-hidden="true">:</i>
+              <div className="timer-unit"><strong>{timeParts.seconds}</strong><small>SEGUNDOS</small></div>
+            </div>
+            <p>Plano Completo por R$ 19,90 durante esse prazo.</p>
             <a className="primary-button" href={SPECIAL_COMPLETE_CHECKOUT_URL}>QUERO APROVEITAR POR R$ 19,90</a>
           </div>
         )}

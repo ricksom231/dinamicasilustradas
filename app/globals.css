@@ -39,7 +39,11 @@ button { cursor: pointer; }
 .showcase-section { overflow: hidden; background: var(--white); }
 .infinite-carousel { display: grid; gap: 16px; width: 100%; }
 .marquee-viewport { width: 100%; overflow: hidden; pointer-events: none; user-select: none; }
-.marquee-track { width: max-content; display: flex; gap: 16px; padding: 2px 8px; }
+.marquee-track { width: max-content; display: flex; gap: 16px; padding: 2px 8px; will-change: transform; }
+.marquee-track.move-left { animation: carousel-left 42s linear infinite; }
+.marquee-track.move-right { animation: carousel-right 42s linear infinite; }
+@keyframes carousel-left { from { transform: translateX(0); } to { transform: translateX(calc(-50% - 8px)); } }
+@keyframes carousel-right { from { transform: translateX(calc(-50% - 8px)); } to { transform: translateX(0); } }
 .marquee-image { width: min(76vw, 285px); height: 346px; display: grid; place-items: center; flex: 0 0 auto; padding: 8px; border: 1px solid rgb(21 101 192 / 13%); border-radius: 18px; background: var(--white); box-shadow: 0 10px 28px rgb(11 42 74 / 8%); }
 .marquee-image img { width: 100%; height: 100%; display: block; object-fit: contain; }
 
@@ -74,10 +78,16 @@ button { cursor: pointer; }
 .included-badge { display: inline-block; margin-top: 10px; padding: 5px 8px; border-radius: 7px; color: var(--blue); background: rgb(21 101 192 / 8%); font-size: 9px; font-weight: 700; }
 
 .plans-section { background: rgb(21 101 192 / 5%); }
-.special-offer-box { max-width: 760px; margin: 0 auto 58px; padding: 28px 20px; border: 2px solid var(--gold); border-radius: 24px; color: var(--white); background: var(--blue-dark); box-shadow: 0 18px 38px rgb(11 42 74 / 18%); text-align: center; }
+.special-offer-box { max-width: 900px; margin: 0 auto 58px; padding: 35px 20px 31px; border: 2px solid var(--gold); border-radius: 24px; color: var(--white); background: var(--blue-dark); box-shadow: 0 18px 38px rgb(11 42 74 / 18%); text-align: center; }
 .special-offer-box .section-kicker { color: var(--gold); }
-.special-offer-box h2 { max-width: 580px; margin: 10px auto; font-size: clamp(23px, 6vw, 35px); line-height: 1.14; letter-spacing: -.03em; }
-.special-offer-box time { display: block; margin: 8px 0; color: var(--gold); font-size: clamp(42px, 12vw, 68px); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1; letter-spacing: -.04em; }
+.special-offer-box h2 { max-width: 720px; margin: 10px auto 12px; color: var(--white); font-size: clamp(30px, 7vw, 58px); font-weight: 800; line-height: .98; letter-spacing: -.045em; text-transform: uppercase; }
+.special-offer-box h2 u { text-decoration-color: var(--gold); text-decoration-thickness: .09em; text-underline-offset: .13em; }
+.special-offer-box .timer-heading { margin: 0 0 12px; color: var(--white); font-size: 14px; font-weight: 700; }
+.offer-timer { display: flex; align-items: flex-start; justify-content: center; gap: clamp(5px, 2vw, 18px); margin: 0 auto 15px; }
+.timer-unit { display: grid; gap: 6px; }
+.timer-unit strong { min-width: clamp(54px, 13vw, 92px); display: grid; place-items: center; padding: 8px 5px; border: 1px solid rgb(255 255 255 / 24%); border-radius: 10px; color: var(--white); background: rgb(5 34 63 / 74%); box-shadow: inset 0 -1px 0 rgb(255 255 255 / 10%); font-size: clamp(39px, 10vw, 68px); font-variant-numeric: tabular-nums; font-weight: 800; line-height: 1; }
+.timer-unit small { color: rgb(255 255 255 / 73%); font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+.offer-timer > i { padding-top: clamp(8px, 2vw, 19px); color: var(--gold); font-size: clamp(32px, 8vw, 54px); font-style: normal; font-weight: 800; line-height: 1; }
 .special-offer-box p { margin: 0; color: rgb(255 255 255 / 76%); font-size: 13px; }
 .special-offer-box .primary-button { margin-top: 18px; }
 .plans-grid { max-width: 1040px; display: grid; grid-template-columns: 1fr; gap: 30px; margin: 0 auto; }
@@ -165,4 +175,5 @@ footer strong { color: var(--white); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
+  .marquee-track { animation-play-state: paused !important; }
 }

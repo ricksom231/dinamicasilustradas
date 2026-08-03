@@ -20,6 +20,10 @@ test("mantém mockup e carrossel separados com as imagens fornecidas", async () 
   assert.match(page, /https:\/\/i\.postimg\.cc\/m2YK7NSc/);
   assert.equal((page.match(/https:\/\/i\.postimg\.cc\//g) ?? []).length, 16);
   assert.match(page, /\[\.\.\.row, \.\.\.row\]/);
+  assert.match(page, /move-left/);
+  assert.match(page, /move-right/);
+  assert.match(css, /@keyframes carousel-left/);
+  assert.match(css, /@keyframes carousel-right/);
   assert.doesNotMatch(page, /onPointerDown|onPointerEnter|scrollCarousel|carouselPaused/);
   assert.doesNotMatch(css, /carousel-controls|cursor:\s*grab|touch-action:\s*pan-x/);
   assert.match(css, /object-fit:\s*contain/);
