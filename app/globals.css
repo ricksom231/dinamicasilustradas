@@ -32,7 +32,7 @@ button { cursor: pointer; }
 .hero-section h1 { max-width: 1050px; margin: 20px auto 15px; font-size: clamp(1.18rem, 5.3vw, 4.75rem); font-weight: 900; line-height: .98; letter-spacing: -.045em; text-wrap: balance; }
 .hero-line { display: block; white-space: nowrap; }
 .hero-highlight { color: var(--gold); }
-.hero-subheadline { max-width: 780px; margin: 0 auto; color: rgb(255 255 255 / 90%); font-size: clamp(1rem, 1.5vw, 1.3rem); font-weight: 400; line-height: 1.5; letter-spacing: -.01em; text-wrap: balance; }
+.hero-subheadline { max-width: 780px; margin: 0 auto; color: rgb(255 255 255 / 90%); font-size: clamp(.86rem, 1.1vw, 1rem); font-weight: 400; line-height: 1.5; letter-spacing: -.01em; text-wrap: balance; }
 .hero-support { max-width: 690px; margin: 13px auto 0; color: rgb(255 255 255 / 72%); font-size: 13px; font-weight: 500; }
 .hero-mockup { width: min(800px, 100%); min-height: 270px; display: grid; place-items: center; margin: 28px auto 0; }
 .hero-mockup img { width: min(100%, 690px); max-height: 525px; object-fit: contain; }

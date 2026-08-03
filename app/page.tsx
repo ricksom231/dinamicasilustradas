@@ -257,7 +257,7 @@ export default function Home() {
         )}
         <div className="section-heading">
           <span className="section-kicker">ESCOLHA SEU ACESSO</span>
-          <h2>Chegue à próxima festa sabendo por onde começar.</h2>
+          <h2>Escolha o melhor plano para você.</h2>
         </div>
         <div className="plans-grid">
           <article className="plan-card basic-plan">
