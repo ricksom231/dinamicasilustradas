@@ -2,8 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
-const completeCheckout = "https://zuckpay.com.br/checkout/plano-completo-200-dinamicas-para-recreadores";
-const basicCheckout = "https://zuckpay.com.br/checkout/plano-basico-200-dinamicas-para-recreadores";
+const BASIC_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-basico-200-dinamicas-para-recreadores";
+const COMPLETE_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-completo-250-dinamicas-para-recreadores";
+const SPECIAL_COMPLETE_CHECKOUT_URL = "https://zuckpay.com.br/checkout/plano-completo-200-dinamicas-para-recreadores";
+const OFFER_DURATION_MINUTES = 25;
+const OFFER_END_STORAGE_KEY = "kit-do-recreador-special-offer-end";
+
 const productMockup = "https://i.postimg.cc/bwhXDFcZ/imagem-2026-08-03-000720349-removebg-preview.png";
 const completePlanImage = "https://i.postimg.cc/m2YK7NSc/imagem-2026-08-03-014301691.png";
 
@@ -24,7 +28,7 @@ const carouselRows = [
   ],
 ];
 
-type IconName = "sparkles" | "brain" | "search" | "star" | "party" | "bolt" | "clock" | "music" | "bag" | "palette" | "book" | "layers";
+type IconName = "sparkles" | "brain" | "search" | "star" | "party" | "bolt" | "clock" | "music" | "bag" | "palette" | "book" | "layers" | "check";
 
 const iconPaths: Record<IconName, React.ReactNode> = {
   sparkles: <><path d="m12 3-1.7 4.3L6 9l4.3 1.7L12 15l1.7-4.3L18 9l-4.3-1.7Z"/><path d="M5 3v4M3 5h4M19 17v4M17 19h4"/></>,
@@ -39,109 +43,156 @@ const iconPaths: Record<IconName, React.ReactNode> = {
   palette: <><path d="M12 3a9 9 0 0 0 0 18h1.5a1.5 1.5 0 0 0 0-3H12a2 2 0 0 1 0-4h3a6 6 0 0 0 0-12Z"/><circle cx="7.5" cy="10" r=".7"/><circle cx="10" cy="6.5" r=".7"/><circle cx="15" cy="7" r=".7"/></>,
   book: <><path d="M4 5.5A3.5 3.5 0 0 1 7.5 2H20v17H7.5A3.5 3.5 0 0 0 4 22Z"/><path d="M4 5.5V19M8 7h8M8 11h6"/></>,
   layers: <><path d="m12 2 9 5-9 5-9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></>,
+  check: <path d="m5 12 4.2 4L19 6.5"/>,
 };
+
+const audiences: Array<{ icon: IconName; title: string; text: string }> = [
+  { icon: "sparkles", title: "Está começando agora", text: "Quer chegar à primeira festa com opções prontas para usar." },
+  { icon: "brain", title: "Tem medo de dar branco", text: "Não quer improvisar com as crianças e os pais esperando." },
+  { icon: "search", title: "Repete as mesmas brincadeiras", text: "Precisa renovar o repertório sem passar horas pesquisando." },
+  { icon: "party", title: "Trabalha com festas infantis", text: "Quer consultar ideias por idade, espaço e material disponível." },
+  { icon: "star", title: "Quer mais organização", text: "Prefere chegar com um plano em vez de decidir tudo na hora." },
+  { icon: "bolt", title: "Precisa de algo pronto", text: "Não quer editar, montar ou assistir horas de aulas." },
+];
+
+const bonuses: Array<{ icon: IconName; title: string; text: string; image: string }> = [
+  { icon: "clock", title: "Roteiro completo de festa", text: "Uma sequência prática para conduzir duas horas de evento.", image: "https://i.postimg.cc/MKcZbLLp/imagem-2026-08-03-001927954.png" },
+  { icon: "music", title: "Playlist para cada momento", text: "Sugestões para recepção, brincadeiras, lanche e encerramento.", image: "https://i.postimg.cc/Nj5N06L6/imagem-2026-08-03-002806620.png" },
+  { icon: "bag", title: "Checklist da Mochila", text: "Uma lista objetiva do que levar para trabalhar preparado.", image: "https://i.postimg.cc/yYWhhVBJ/imagem-2026-08-03-003058814.png" },
+  { icon: "palette", title: "40 Brincadeiras Temáticas", text: "Atividades extras para festas com temas especiais.", image: "https://i.postimg.cc/cJdrmmYj/imagem-2026-08-03-003428173.png" },
+];
+
+const basicIncluded = ["200 brincadeiras completas", "8 categorias organizadas", "Informações de idade, material e duração", "Passo a passo direto", "Consulta pelo celular", "Acesso digital imediato"];
+const basicNotIncluded = ["Roteiro de festa de 2 horas", "Playlist por momento", "Checklist da mochila", "40 brincadeiras temáticas extras"];
+const completeKit = ["200 brincadeiras e dinâmicas completas", "Atividades organizadas em 8 categorias", "Opções para diferentes idades", "Brincadeiras para salão e espaços abertos", "Atividades com ou sem material", "Idade recomendada em cada brincadeira", "Número indicado de crianças", "Material necessário informado", "Tempo médio de cada atividade", "Passo a passo curto e direto", "Consulta pelo celular, tablet ou computador", "Material digital pronto, sem precisar editar"];
+const completeBonuses = ["Roteiro pronto para duas horas de festa", "Variações para festas pequenas, grandes e temáticas", "Playlist dividida por momento do evento", "Checklist completo da Mochila do Recreador", "40 brincadeiras temáticas extras", "Cinco grupos de festas temáticas", "Acesso digital imediato após o pagamento"];
 
 function Icon({ name }: { name: IconName }) {
   return <svg className="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{iconPaths[name]}</svg>;
 }
 
-const audiences: Array<{ icon: IconName; text: string }> = [
-  { icon: "sparkles", text: "Está começando como recreador" },
-  { icon: "brain", text: "Tem medo de dar branco durante a festa" },
-  { icon: "search", text: "Vive pesquisando brincadeiras no Google" },
-  { icon: "star", text: "Quer impressionar os pais" },
-  { icon: "party", text: "Trabalha com festas infantis" },
-  { icon: "bolt", text: "Quer ter sempre uma brincadeira pronta" },
-];
-
-const bonuses: Array<{ icon: IconName; title: string; text: string; image: string }> = [
-  { icon: "clock", title: "Roteiro completo de festa", text: "Uma sequência prática para conduzir 2 horas de evento.", image: "https://i.postimg.cc/MKcZbLLp/imagem-2026-08-03-001927954.png" },
-  { icon: "music", title: "Playlist para cada momento", text: "Músicas organizadas para acompanhar o ritmo da festa.", image: "https://i.postimg.cc/Nj5N06L6/imagem-2026-08-03-002806620.png" },
-  { icon: "bag", title: "Checklist da Mochila", text: "Uma lista objetiva do que levar para trabalhar preparado.", image: "https://i.postimg.cc/yYWhhVBJ/imagem-2026-08-03-003058814.png" },
-  { icon: "palette", title: "40 Brincadeiras Temáticas", text: "Atividades extras para festas com temas especiais.", image: "https://i.postimg.cc/cJdrmmYj/imagem-2026-08-03-003428173.png" },
-];
-
-const faqs = [
-  {
-    question: "O material é físico?",
-    answer: "Não. O Kit do Recreador é um material digital em PDF, feito para você consultar pelo celular, tablet ou computador.",
-  },
-  {
-    question: "Quando recebo o acesso?",
-    answer: "O acesso é liberado logo após a confirmação do pagamento.",
-  },
-  {
-    question: "Qual é a diferença entre os planos?",
-    answer: "O Plano Básico traz as 200 brincadeiras. O Plano Completo inclui o mesmo acervo e os bônus: roteiro, playlist, checklist e brincadeiras temáticas.",
-  },
-  {
-    question: "Consigo usar mesmo sendo iniciante?",
-    answer: "Sim. As brincadeiras foram organizadas para uma consulta rápida, com orientações diretas para aplicar durante a festa.",
-  },
-];
-
 function Feature({ children, negative = false }: { children: React.ReactNode; negative?: boolean }) {
-  return <li className={negative ? "feature negative" : "feature"}><span aria-hidden="true">{negative ? "×" : "✓"}</span>{children}</li>;
+  return <li className={negative ? "feature negative" : "feature"}><span aria-hidden="true">{negative ? "−" : <Icon name="check" />}</span>{children}</li>;
+}
+
+function formatOfferTime(totalSeconds: number) {
+  const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+  const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+  return `${minutes}:${seconds}`;
 }
 
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
-  const modalCloseRef = useRef<HTMLButtonElement>(null);
+  const [offerSeconds, setOfferSeconds] = useState(OFFER_DURATION_MINUTES * 60);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const carouselRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const hasSpecialCompleteCheckout = SPECIAL_COMPLETE_CHECKOUT_URL.startsWith("https://");
+  const specialOfferActive = hasSpecialCompleteCheckout && offerSeconds > 0;
+  const timeLabel = formatOfferTime(offerSeconds);
+
+  useEffect(() => {
+    const storedEnd = Number(window.localStorage.getItem(OFFER_END_STORAGE_KEY));
+    const endTime = Number.isFinite(storedEnd) && storedEnd > 0
+      ? storedEnd
+      : Date.now() + OFFER_DURATION_MINUTES * 60 * 1000;
+
+    if (!storedEnd) window.localStorage.setItem(OFFER_END_STORAGE_KEY, String(endTime));
+
+    const updateTimer = () => setOfferSeconds(Math.max(0, Math.ceil((endTime - Date.now()) / 1000)));
+    updateTimer();
+    const interval = window.setInterval(updateTimer, 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let animationFrame = 0;
+    let lastFrame = performance.now();
+    const initialized = new WeakSet<HTMLDivElement>();
+
+    const animate = (now: number) => {
+      const distance = Math.min((now - lastFrame) * 0.035, 2.2);
+      lastFrame = now;
+      carouselRefs.current.forEach((viewport, index) => {
+        if (!viewport) return;
+        const halfWidth = viewport.scrollWidth / 2;
+        if (!halfWidth) return;
+        if (!initialized.has(viewport)) {
+          viewport.scrollLeft = index === 1 ? halfWidth : 0;
+          initialized.add(viewport);
+        }
+        viewport.scrollLeft += index === 0 ? distance : -distance;
+        if (viewport.scrollLeft >= halfWidth) viewport.scrollLeft -= halfWidth;
+        if (viewport.scrollLeft <= 0) viewport.scrollLeft += halfWidth;
+      });
+      animationFrame = window.requestAnimationFrame(animate);
+    };
+    animationFrame = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, []);
 
   useEffect(() => {
     if (!modalOpen) return;
-    const originalOverflow = document.body.style.overflow;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    modalCloseRef.current?.focus();
-    const closeOnEscape = (event: KeyboardEvent) => event.key === "Escape" && setModalOpen(false);
-    window.addEventListener("keydown", closeOnEscape);
+    const focusable = () => Array.from(modalRef.current?.querySelectorAll<HTMLElement>('a[href], button:not([disabled])') ?? []);
+    window.setTimeout(() => focusable()[0]?.focus(), 0);
+    const keepFocusInside = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setModalOpen(false);
+      if (event.key !== "Tab") return;
+      const controls = focusable();
+      if (!controls.length) return;
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener("keydown", keepFocusInside);
     return () => {
-      document.body.style.overflow = originalOverflow;
-      window.removeEventListener("keydown", closeOnEscape);
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", keepFocusInside);
     };
   }, [modalOpen]);
 
   return (
     <main>
-      <section className="headline-section" id="inicio">
-        <div className="headline-inner">
+      <div className="offer-bar" role="region" aria-label="Oferta especial do Plano Completo">
+        {specialOfferActive ? (
+          <div className="offer-bar-inner">
+            <p><span className="offer-bar-desktop">Oferta do Plano Completo por R$ 19,90 termina em:</span><span className="offer-bar-mobile">Completo por R$ 19,90</span> <time aria-live="off">{timeLabel}</time></p>
+            <a href="#oferta-especial">APROVEITAR OFERTA</a>
+          </div>
+        ) : <p className="offer-ended">Oferta especial encerrada</p>}
+      </div>
+
+      <section className="hero-section" id="inicio">
+        <div className="hero-copy">
           <span className="brand-pill">KIT DO RECREADOR · MATERIAL DIGITAL EM PDF</span>
-          <h1>Nunca fique sem ideias durante uma festa infantil.</h1>
-          <p>Tenha 200 brincadeiras prontas, organizadas e fáceis de aplicar em qualquer festa, sem perder tempo pesquisando na internet.</p>
+          <h1>Nunca mais fique sem saber qual brincadeira fazer na festa.</h1>
+          <p className="hero-subheadline">Tenha 200 brincadeiras prontas para consultar pelo celular e aplicar sem perder tempo pesquisando ideias soltas na internet.</p>
+          <p className="hero-support">Escolha pela categoria, confira a idade, o material, o tempo e siga o passo a passo.</p>
         </div>
+        <div className="hero-mockup">
+          <img src={productMockup} alt="Mockup do PDF Kit do Recreador com brincadeiras prontas" loading="eager" fetchPriority="high" decoding="async" />
+        </div>
+        <a className="primary-button hero-cta" href="#planos">QUERO TER AS BRINCADEIRAS PRONTAS <span aria-hidden="true">↓</span></a>
+        <p className="hero-practicality">Acesso imediato <span>•</span> Material em PDF <span>•</span> Consulte pelo celular</p>
       </section>
 
-      <section className="product-section section-shell">
+      <section className="showcase-section section-shell" aria-labelledby="por-dentro">
         <div className="section-heading">
           <span className="section-kicker">POR DENTRO DO KIT</span>
-          <h2>Veja como o material é por dentro</h2>
+          <h2 id="por-dentro">Veja como o material é por dentro</h2>
           <p>Material organizado para consulta rápida durante qualquer evento.</p>
-        </div>
-        <div className="product-showcase">
-          <img src={productMockup} alt="Mockup do Kit do Recreador" loading="eager" fetchPriority="high" decoding="async" />
-        </div>
-        <div className="center-action"><a className="primary-button" href="#planos">QUERO VER OS PLANOS <span aria-hidden="true">↓</span></a></div>
-      </section>
-
-      <section className="audience-section section-shell">
-        <div className="section-heading compact-heading">
-          <span className="section-kicker">FEITO PARA A ROTINA REAL</span>
-          <h2>Esse material é perfeito para você que...</h2>
-        </div>
-        <div className="audience-grid">
-          {audiences.map((item) => <article className="audience-card" key={item.text}><span className="icon-box"><Icon name={item.icon} /></span><h3>{item.text}</h3></article>)}
-        </div>
-      </section>
-
-      <section className="receive-section section-shell">
-        <div className="section-heading">
-          <span className="section-kicker">O QUE VOCÊ VAI RECEBER</span>
-          <h2>Um material feito para encontrar e aplicar.</h2>
         </div>
         <div className="infinite-carousel" aria-label="Páginas do material em movimento contínuo">
           {carouselRows.map((row, rowIndex) => (
-            <div className="marquee-viewport" key={rowIndex}>
-              <div className={`marquee-track ${rowIndex === 0 ? "move-left" : "move-right"}`}>
+            <div
+              className="marquee-viewport"
+              key={rowIndex}
+              ref={(element) => { carouselRefs.current[rowIndex] = element; }}
+            >
+              <div className="marquee-track">
                 {[...row, ...row].map((image, imageIndex) => (
                   <div className="marquee-image" key={`${rowIndex}-${imageIndex}`}>
                     <img src={image} alt="Página interna do Kit do Recreador" loading="lazy" decoding="async" />
@@ -153,39 +204,70 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="audience-section section-shell">
+        <div className="section-heading compact-heading">
+          <span className="section-kicker">PARA QUEM É</span>
+          <h2>Este material é para você que…</h2>
+        </div>
+        <div className="audience-grid">
+          {audiences.map((item) => <article className="audience-card" key={item.title}><span className="icon-box"><Icon name={item.icon} /></span><div><h3>{item.title}</h3><p>{item.text}</p></div></article>)}
+        </div>
+      </section>
+
+      <section className="kit-section section-shell">
+        <div className="section-heading">
+          <span className="section-kicker">O QUE VEM NAS 200 BRINCADEIRAS</span>
+          <h2>Abra o PDF, escolha uma categoria e encontre uma brincadeira pronta.</h2>
+          <p>Em cada atividade, você vê o que precisa para aplicar sem ficar pensando no que fazer depois.</p>
+        </div>
+        <div className="kit-grid">
+          <article><span><Icon name="layers" /></span><h3>8 categorias</h3><p>Quebra-gelo, música, ar livre, salão, sem material e mais.</p></article>
+          <article><span><Icon name="star" /></span><h3>Para cada idade</h3><p>Veja a faixa recomendada antes de escolher a próxima atividade.</p></article>
+          <article><span><Icon name="bag" /></span><h3>Material e tempo</h3><p>Confira o que usar, a quantidade de crianças e a duração média.</p></article>
+          <article><span><Icon name="book" /></span><h3>Passo a passo</h3><p>Leia rápido, aplique e siga para a próxima brincadeira quando precisar.</p></article>
+        </div>
+      </section>
+
       <section className="bonus-section section-shell">
         <div className="section-heading">
           <span className="exclusive-badge">EXCLUSIVO DO PLANO COMPLETO</span>
-          <h2>Mais organização para conduzir a festa inteira.</h2>
+          <h2>No Plano Completo, você ainda recebe:</h2>
+          <p>Além das 200 brincadeiras, leve materiais que ajudam a organizar a festa inteira.</p>
         </div>
         <div className="bonus-grid">
-          {bonuses.map((bonus) => (
+          {bonuses.map((bonus, index) => (
             <article className="bonus-card" key={bonus.title}>
               <div className="bonus-image"><img src={bonus.image} alt={bonus.title} loading="lazy" decoding="async" /></div>
-              <div className="bonus-copy"><span className="bonus-icon"><Icon name={bonus.icon} /></span><div><h3>{bonus.title}</h3><p>{bonus.text}</p></div></div>
+              <div className="bonus-copy"><span className="bonus-icon"><Icon name={bonus.icon} /></span><div><small>BÔNUS {index + 1}</small><h3>{bonus.title}</h3><p>{bonus.text}</p><span className="included-badge">Incluído no Plano Completo</span></div></div>
             </article>
           ))}
         </div>
       </section>
 
       <section className="plans-section section-shell" id="planos">
+        {specialOfferActive && (
+          <div className="special-offer-box" id="oferta-especial">
+            <span className="section-kicker">OFERTA ESPECIAL</span>
+            <h2>Seu acesso ao Plano Completo por R$ 19,90 está reservado por:</h2>
+            <time aria-live="off">{timeLabel}</time>
+            <p>Depois do prazo, o Plano Completo volta para R$ 27,90.</p>
+            <a className="primary-button" href={SPECIAL_COMPLETE_CHECKOUT_URL}>QUERO APROVEITAR POR R$ 19,90</a>
+          </div>
+        )}
         <div className="section-heading">
           <span className="section-kicker">ESCOLHA SEU ACESSO</span>
-          <h2>Tenha o repertório que faltava na sua próxima festa.</h2>
+          <h2>Chegue à próxima festa sabendo por onde começar.</h2>
         </div>
         <div className="plans-grid">
           <article className="plan-card basic-plan">
             <span className="plan-name">PLANO BÁSICO</span>
             <h3>200 brincadeiras prontas</h3>
+            <p className="plan-intro">Para quem quer o acervo completo de brincadeiras e não precisa dos materiais extras.</p>
             <div className="price"><span>R$</span><strong>10</strong><small>,00</small></div>
             <p className="payment-copy">pagamento único · acesso imediato</p>
-            <ul>
-              <Feature>200 brincadeiras</Feature>
-              <Feature>Consulta rápida</Feature>
-              <Feature>PDF imediato</Feature>
-              <Feature negative>Roteiro, playlist e checklist</Feature>
-              <Feature negative>40 brincadeiras temáticas</Feature>
-            </ul>
+            <ul>{basicIncluded.map((item) => <Feature key={item}>{item}</Feature>)}</ul>
+            <p className="not-included-title">Não inclui os materiais extras:</p>
+            <ul>{basicNotIncluded.map((item) => <Feature key={item} negative>{item}</Feature>)}</ul>
             <button className="plan-button basic-button" onClick={() => setModalOpen(true)}>QUERO O PLANO BÁSICO</button>
           </article>
 
@@ -197,48 +279,17 @@ export default function Home() {
             <p className="old-price">De R$ 47,00 por</p>
             <div className="price"><span>R$</span><strong>27</strong><small>,90</small></div>
             <p className="payment-copy">pagamento único · acesso imediato</p>
-            <ul>
-              <Feature>As mesmas 200 brincadeiras</Feature>
-              <Feature>Roteiro de Festa</Feature>
-              <Feature>Playlist</Feature>
-              <Feature>Checklist</Feature>
-              <Feature>40 Brincadeiras Temáticas</Feature>
-            </ul>
-            <a className="plan-button complete-button" href={completeCheckout}>QUERO O PLANO COMPLETO</a>
+            <div className="plan-list-block">
+              <h4>Tudo que já vem no Kit</h4>
+              <ul>{completeKit.slice(0, 5).map((item) => <Feature key={item}>{item}</Feature>)}</ul>
+              <details className="plan-details"><summary>Ver tudo que está incluído <span>+</span></summary><ul>{completeKit.slice(5).map((item) => <Feature key={item}>{item}</Feature>)}</ul></details>
+            </div>
+            <div className="plan-list-block bonus-list-block">
+              <h4>Mais 4 blocos de bônus</h4>
+              <ul>{completeBonuses.map((item) => <Feature key={item}>{item}</Feature>)}</ul>
+            </div>
+            <a className="plan-button complete-button" href={COMPLETE_CHECKOUT_URL}>QUERO O PLANO COMPLETO</a>
           </article>
-        </div>
-      </section>
-
-      <section className="guarantee-section section-shell">
-        <div className="guarantee-card">
-          <span className="guarantee-icon"><Icon name="sparkles" /></span>
-          <div>
-            <span className="section-kicker">COMPRA COM TRANQUILIDADE</span>
-            <h2>Seu acesso é simples e imediato.</h2>
-            <p>Após a confirmação do pagamento, você recebe o material digital para consultar quando precisar. As condições da compra ficam sempre visíveis no checkout.</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="faq-section section-shell">
-        <div className="section-heading">
-          <span className="section-kicker">PERGUNTAS FREQUENTES</span>
-          <h2>Ficou com alguma dúvida?</h2>
-        </div>
-        <div className="faq-list">
-          {faqs.map((faq) => (
-            <details className="faq-item" key={faq.question}>
-              <summary>{faq.question}<span aria-hidden="true">+</span></summary>
-              <p>{faq.answer}</p>
-            </details>
-          ))}
-        </div>
-      </section>
-
-      <section className="final-cta-section">
-        <div className="final-cta-inner">
-          <h2>Pronto para ter uma brincadeira certa para cada momento?</h2>
-          <a className="primary-button" href="#planos">QUERO ESCOLHER MEU PLANO <span aria-hidden="true">↑</span></a>
         </div>
       </section>
 
@@ -249,13 +300,24 @@ export default function Home() {
 
       {modalOpen && (
         <div className="modal-backdrop" onMouseDown={(event) => event.target === event.currentTarget && setModalOpen(false)}>
-          <div className="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-            <button ref={modalCloseRef} className="modal-close" aria-label="Fechar oferta" onClick={() => setModalOpen(false)}>×</button>
-            <span className="modal-badge">OFERTA ESPECIAL</span>
-            <h2 id="modal-title">Espere! Você pode levar MUITO MAIS por apenas <em>R$ 19,90.</em></h2>
-            <p>Antes de finalizar, aproveite esta oferta exclusiva e leve também todos os bônus do Plano Completo por um valor especial.</p>
-            <a className="modal-accept" href={completeCheckout}>SIM, QUERO O COMPLETO</a>
-            <a className="modal-decline" href={basicCheckout}>NÃO, CONTINUAR COM O BÁSICO</a>
+          <div className="modal" ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button className="modal-close" aria-label="Fechar oferta" onClick={() => setModalOpen(false)}>×</button>
+            {specialOfferActive ? (
+              <>
+                <span className="modal-badge">OFERTA ESPECIAL</span>
+                <h2 id="modal-title">Antes de continuar: leve o Plano Completo por <em>R$ 19,90.</em></h2>
+                <p>Por mais R$ 9,90, você leva as mesmas 200 brincadeiras e recebe também o roteiro, a playlist, o checklist e as 40 brincadeiras temáticas.</p>
+                <div className="modal-comparison"><span>Plano Básico — R$ 10,00</span><strong>Plano Completo nesta oferta — R$ 19,90</strong></div>
+                <a className="modal-accept" href={SPECIAL_COMPLETE_CHECKOUT_URL}>SIM, QUERO O COMPLETO POR R$ 19,90</a>
+                <a className="modal-decline" href={BASIC_CHECKOUT_URL}>NÃO, QUERO SOMENTE O BÁSICO</a>
+              </>
+            ) : (
+              <>
+                <h2 id="modal-title">Continuar com o <em>Plano Básico.</em></h2>
+                <p>A oferta especial do Plano Completo foi encerrada. Você pode seguir normalmente com as 200 brincadeiras do Plano Básico.</p>
+                <a className="modal-accept" href={BASIC_CHECKOUT_URL}>IR PARA O CHECKOUT DO BÁSICO</a>
+              </>
+            )}
           </div>
         </div>
       )}
