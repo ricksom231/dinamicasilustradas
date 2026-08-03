@@ -14,11 +14,11 @@ test("mantém o conteúdo essencial da landing page", async () => {
 
 test("mantém a ordem e apenas as seis seções pedidas", async () => {
   const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  const classes = ["headline-section", "product-section", "audience-section", "receive-section", "bonus-section", "plans-section"];
+  const classes = ["headline-section", "product-section", "audience-section", "receive-section", "bonus-section", "plans-section", "guarantee-section", "faq-section", "final-cta-section"];
   const positions = classes.map((name) => page.indexOf(`className=\"${name}`));
   assert.ok(positions.every((position) => position >= 0));
   assert.deepEqual([...positions].sort((a, b) => a - b), positions);
-  assert.equal((page.match(/<section\b/g) ?? []).length, 6);
+  assert.equal((page.match(/<section\b/g) ?? []).length, 9);
 });
 
 test("usa as imagens fornecidas sem promessas proibidas", async () => {
@@ -31,7 +31,7 @@ test("usa as imagens fornecidas sem promessas proibidas", async () => {
   assert.equal((page.match(/https:\/\/i\.postimg\.cc\//g) ?? []).length, 16);
   assert.match(css, /object-fit:\s*contain/);
   assert.doesNotMatch(page, /<video\b/i);
-  assert.doesNotMatch(page, /depoimento|avaliaç(?:ão|ões)|certificado|mentoria|grupo VIP|garantia/i);
+  assert.doesNotMatch(page, /depoimento|avaliaç(?:ão|ões)|certificado|mentoria|grupo VIP/i);
 });
 
 test("implementa o carrossel infinito em duas direções", async () => {

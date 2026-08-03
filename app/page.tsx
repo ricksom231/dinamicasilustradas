@@ -61,6 +61,25 @@ const bonuses: Array<{ icon: IconName; title: string; text: string; image: strin
   { icon: "palette", title: "40 Brincadeiras Temáticas", text: "Atividades extras para festas com temas especiais.", image: "https://i.postimg.cc/cJdrmmYj/imagem-2026-08-03-003428173.png" },
 ];
 
+const faqs = [
+  {
+    question: "O material é físico?",
+    answer: "Não. O Kit do Recreador é um material digital em PDF, feito para você consultar pelo celular, tablet ou computador.",
+  },
+  {
+    question: "Quando recebo o acesso?",
+    answer: "O acesso é liberado logo após a confirmação do pagamento.",
+  },
+  {
+    question: "Qual é a diferença entre os planos?",
+    answer: "O Plano Básico traz as 200 brincadeiras. O Plano Completo inclui o mesmo acervo e os bônus: roteiro, playlist, checklist e brincadeiras temáticas.",
+  },
+  {
+    question: "Consigo usar mesmo sendo iniciante?",
+    answer: "Sim. As brincadeiras foram organizadas para uma consulta rápida, com orientações diretas para aplicar durante a festa.",
+  },
+];
+
 function Feature({ children, negative = false }: { children: React.ReactNode; negative?: boolean }) {
   return <li className={negative ? "feature negative" : "feature"}><span aria-hidden="true">{negative ? "×" : "✓"}</span>{children}</li>;
 }
@@ -89,7 +108,6 @@ export default function Home() {
           <span className="brand-pill">KIT DO RECREADOR · MATERIAL DIGITAL EM PDF</span>
           <h1>Nunca fique sem ideias durante uma festa infantil.</h1>
           <p>Tenha 200 brincadeiras prontas, organizadas e fáceis de aplicar em qualquer festa, sem perder tempo pesquisando na internet.</p>
-          <a className="primary-button" href="#planos">QUERO VER OS PLANOS <span aria-hidden="true">↓</span></a>
         </div>
       </section>
 
@@ -102,6 +120,7 @@ export default function Home() {
         <div className="product-showcase">
           <img src={productMockup} alt="Mockup do Kit do Recreador" loading="eager" fetchPriority="high" decoding="async" />
         </div>
+        <div className="center-action"><a className="primary-button" href="#planos">QUERO VER OS PLANOS <span aria-hidden="true">↓</span></a></div>
       </section>
 
       <section className="audience-section section-shell">
@@ -132,7 +151,6 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="center-action"><a className="primary-button" href="#planos">QUERO GARANTIR O MEU <span aria-hidden="true">↓</span></a></div>
       </section>
 
       <section className="bonus-section section-shell">
@@ -188,6 +206,39 @@ export default function Home() {
             </ul>
             <a className="plan-button complete-button" href={completeCheckout}>QUERO O PLANO COMPLETO</a>
           </article>
+        </div>
+      </section>
+
+      <section className="guarantee-section section-shell">
+        <div className="guarantee-card">
+          <span className="guarantee-icon"><Icon name="sparkles" /></span>
+          <div>
+            <span className="section-kicker">COMPRA COM TRANQUILIDADE</span>
+            <h2>Seu acesso é simples e imediato.</h2>
+            <p>Após a confirmação do pagamento, você recebe o material digital para consultar quando precisar. As condições da compra ficam sempre visíveis no checkout.</p>
+          </div>
+        </div>
+      </section>
+
+      <section className="faq-section section-shell">
+        <div className="section-heading">
+          <span className="section-kicker">PERGUNTAS FREQUENTES</span>
+          <h2>Ficou com alguma dúvida?</h2>
+        </div>
+        <div className="faq-list">
+          {faqs.map((faq) => (
+            <details className="faq-item" key={faq.question}>
+              <summary>{faq.question}<span aria-hidden="true">+</span></summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="final-cta-section">
+        <div className="final-cta-inner">
+          <h2>Pronto para ter uma brincadeira certa para cada momento?</h2>
+          <a className="primary-button" href="#planos">QUERO ESCOLHER MEU PLANO <span aria-hidden="true">↑</span></a>
         </div>
       </section>
 
