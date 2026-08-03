@@ -4,6 +4,25 @@ import { useEffect, useRef, useState } from "react";
 
 const completeCheckout = "https://zuckpay.com.br/checkout/plano-completo-200-dinamicas-para-recreadores";
 const basicCheckout = "https://zuckpay.com.br/checkout/plano-basico-200-dinamicas-para-recreadores";
+const productMockup = "https://i.postimg.cc/bwhXDFcZ/imagem-2026-08-03-000720349-removebg-preview.png";
+const completePlanImage = "https://i.postimg.cc/m2YK7NSc/imagem-2026-08-03-014301691.png";
+
+const carouselRows = [
+  [
+    "https://i.postimg.cc/Y03B36wZ/imagem-2026-08-03-012447800.png",
+    "https://i.postimg.cc/R0Hr85Bg/imagem-2026-08-03-012519212.png",
+    "https://i.postimg.cc/MGR4577N/imagem-2026-08-03-012558186.png",
+    "https://i.postimg.cc/8P00VKwK/imagem-2026-08-03-012628042.png",
+    "https://i.postimg.cc/HWP2JJ5H/imagem-2026-08-03-012722492.png",
+  ],
+  [
+    "https://i.postimg.cc/Y2V6r5Km/imagem-2026-08-03-012812230.png",
+    "https://i.postimg.cc/50yz13sz/imagem-2026-08-03-012903876.png",
+    "https://i.postimg.cc/h4JC1bKz/imagem-2026-08-03-012945374.png",
+    "https://i.postimg.cc/258GbnH1/imagem-2026-08-03-013018009.png",
+    "https://i.postimg.cc/SsHfv3m8/imagem-2026-08-03-013054818.png",
+  ],
+];
 
 type IconName = "sparkles" | "brain" | "search" | "star" | "party" | "bolt" | "clock" | "music" | "bag" | "palette" | "book" | "layers";
 
@@ -35,20 +54,11 @@ const audiences: Array<{ icon: IconName; text: string }> = [
   { icon: "bolt", text: "Quer ter sempre uma brincadeira pronta" },
 ];
 
-const slides = [
-  { title: "200 Brincadeiras organizadas", description: "Um acervo completo para consultar quando precisar.", label: "Placeholder • Página do acervo" },
-  { title: "Separadas por categorias", description: "Encontre rapidamente a opção certa para cada momento.", label: "Placeholder • Página de categoria" },
-  { title: "Consulta rápida", description: "Informações essenciais visíveis de forma organizada.", label: "Placeholder • Visão da ficha" },
-  { title: "Passo a passo simples", description: "Orientações diretas para conduzir sem complicação.", label: "Placeholder • Passo a passo" },
-  { title: "Brincadeiras para várias idades", description: "Escolha de acordo com a faixa etária da turma.", label: "Placeholder • Indicação de idade" },
-  { title: "Material pronto para usar", description: "Abra o PDF, escolha uma brincadeira e aplique.", label: "Placeholder • Material digital" },
-];
-
-const bonuses: Array<{ icon: IconName; title: string; text: string }> = [
-  { icon: "clock", title: "Roteiro completo de festa", text: "Uma sequência prática para conduzir 2 horas de evento." },
-  { icon: "music", title: "Playlist para cada momento", text: "Músicas organizadas para acompanhar o ritmo da festa." },
-  { icon: "bag", title: "Checklist da Mochila", text: "Uma lista objetiva do que levar para trabalhar preparado." },
-  { icon: "palette", title: "40 Brincadeiras Temáticas", text: "Atividades extras para festas com temas especiais." },
+const bonuses: Array<{ icon: IconName; title: string; text: string; image: string }> = [
+  { icon: "clock", title: "Roteiro completo de festa", text: "Uma sequência prática para conduzir 2 horas de evento.", image: "https://i.postimg.cc/MKcZbLLp/imagem-2026-08-03-001927954.png" },
+  { icon: "music", title: "Playlist para cada momento", text: "Músicas organizadas para acompanhar o ritmo da festa.", image: "https://i.postimg.cc/Nj5N06L6/imagem-2026-08-03-002806620.png" },
+  { icon: "bag", title: "Checklist da Mochila", text: "Uma lista objetiva do que levar para trabalhar preparado.", image: "https://i.postimg.cc/yYWhhVBJ/imagem-2026-08-03-003058814.png" },
+  { icon: "palette", title: "40 Brincadeiras Temáticas", text: "Atividades extras para festas com temas especiais.", image: "https://i.postimg.cc/cJdrmmYj/imagem-2026-08-03-003428173.png" },
 ];
 
 function Feature({ children, negative = false }: { children: React.ReactNode; negative?: boolean }) {
@@ -58,7 +68,6 @@ function Feature({ children, negative = false }: { children: React.ReactNode; ne
 export default function Home() {
   const [modalOpen, setModalOpen] = useState(false);
   const modalCloseRef = useRef<HTMLButtonElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!modalOpen) return;
@@ -72,10 +81,6 @@ export default function Home() {
       window.removeEventListener("keydown", closeOnEscape);
     };
   }, [modalOpen]);
-
-  const moveCarousel = (direction: 1 | -1) => {
-    carouselRef.current?.scrollBy({ left: direction * Math.min(430, window.innerWidth * 0.84), behavior: "smooth" });
-  };
 
   return (
     <main>
@@ -94,11 +99,8 @@ export default function Home() {
           <h2>Veja como o material é por dentro</h2>
           <p>Material organizado para consulta rápida durante qualquer evento.</p>
         </div>
-        <div className="product-placeholder image-placeholder" role="img" aria-label="Espaço reservado para o mockup principal do produto">
-          <div className="placeholder-grid" aria-hidden="true"><span/><span/><span/></div>
-          <Icon name="book" />
-          <strong>Mockup do Produto</strong>
-          <small>Substituir pela imagem principal do KIT DO RECREADOR</small>
+        <div className="product-showcase">
+          <img src={productMockup} alt="Mockup do Kit do Recreador" loading="eager" fetchPriority="high" decoding="async" />
         </div>
       </section>
 
@@ -113,23 +115,21 @@ export default function Home() {
       </section>
 
       <section className="receive-section section-shell">
-        <div className="section-heading carousel-heading">
-          <div><span className="section-kicker">O QUE VOCÊ VAI RECEBER</span><h2>Um material feito para encontrar e aplicar.</h2></div>
-          <div className="carousel-controls" aria-label="Controles do carrossel">
-            <button onClick={() => moveCarousel(-1)} aria-label="Ver item anterior">←</button>
-            <button onClick={() => moveCarousel(1)} aria-label="Ver próximo item">→</button>
-          </div>
+        <div className="section-heading">
+          <span className="section-kicker">O QUE VOCÊ VAI RECEBER</span>
+          <h2>Um material feito para encontrar e aplicar.</h2>
         </div>
-        <div className="carousel" ref={carouselRef} aria-label="Demonstração das páginas do material">
-          {slides.map((slide, index) => (
-            <article className="carousel-card" key={slide.title}>
-              <div className="slide-placeholder image-placeholder" role="img" aria-label={slide.label}>
-                <span className="slide-number">{String(index + 1).padStart(2, "0")}</span>
-                <Icon name={index % 2 === 0 ? "book" : "layers"} />
-                <strong>{slide.label}</strong>
+        <div className="infinite-carousel" aria-label="Páginas do material em movimento contínuo">
+          {carouselRows.map((row, rowIndex) => (
+            <div className="marquee-viewport" key={rowIndex}>
+              <div className={`marquee-track ${rowIndex === 0 ? "move-left" : "move-right"}`}>
+                {[...row, ...row].map((image, imageIndex) => (
+                  <div className="marquee-image" key={`${rowIndex}-${imageIndex}`}>
+                    <img src={image} alt="Página interna do Kit do Recreador" loading="lazy" decoding="async" />
+                  </div>
+                ))}
               </div>
-              <div className="slide-copy"><h3>{slide.title}</h3><p>{slide.description}</p></div>
-            </article>
+            </div>
           ))}
         </div>
         <div className="center-action"><a className="primary-button" href="#planos">QUERO GARANTIR O MEU <span aria-hidden="true">↓</span></a></div>
@@ -141,9 +141,9 @@ export default function Home() {
           <h2>Mais organização para conduzir a festa inteira.</h2>
         </div>
         <div className="bonus-grid">
-          {bonuses.map((bonus, index) => (
+          {bonuses.map((bonus) => (
             <article className="bonus-card" key={bonus.title}>
-              <div className="bonus-placeholder image-placeholder" role="img" aria-label={`Placeholder de imagem: ${bonus.title}`}><Icon name={bonus.icon} /><span>Imagem do bônus {index + 1}</span></div>
+              <div className="bonus-image"><img src={bonus.image} alt={bonus.title} loading="lazy" decoding="async" /></div>
               <div className="bonus-copy"><span className="bonus-icon"><Icon name={bonus.icon} /></span><div><h3>{bonus.title}</h3><p>{bonus.text}</p></div></div>
             </article>
           ))}
@@ -159,7 +159,6 @@ export default function Home() {
           <article className="plan-card basic-plan">
             <span className="plan-name">PLANO BÁSICO</span>
             <h3>200 brincadeiras prontas</h3>
-            <div className="plan-visual image-placeholder"><Icon name="book" /><span>Comparativo visual · Básico</span></div>
             <div className="price"><span>R$</span><strong>10</strong><small>,00</small></div>
             <p className="payment-copy">pagamento único · acesso imediato</p>
             <ul>
@@ -176,7 +175,7 @@ export default function Home() {
             <span className="choice-badge">MAIS ESCOLHIDO</span>
             <span className="plan-name">PLANO COMPLETO</span>
             <h3>Kit completo + todos os bônus</h3>
-            <div className="plan-visual image-placeholder"><Icon name="layers" /><span>Comparativo visual · Completo</span></div>
+            <div className="complete-plan-image"><img src={completePlanImage} alt="Visual do Plano Completo" loading="lazy" decoding="async" /></div>
             <p className="old-price">De R$ 47,00 por</p>
             <div className="price"><span>R$</span><strong>27</strong><small>,90</small></div>
             <p className="payment-copy">pagamento único · acesso imediato</p>

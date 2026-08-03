@@ -21,11 +21,40 @@ test("mantém a ordem e apenas as seis seções pedidas", async () => {
   assert.equal((page.match(/<section\b/g) ?? []).length, 6);
 });
 
-test("usa placeholders e não incorpora imagens ou promessas proibidas", async () => {
-  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
-  assert.doesNotMatch(page, /<img\b|<video\b/i);
-  assert.match(page, /image-placeholder/);
+test("usa as imagens fornecidas sem promessas proibidas", async () => {
+  const [page, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+  assert.match(page, /https:\/\/i\.postimg\.cc\/bwhXDFcZ/);
+  assert.match(page, /https:\/\/i\.postimg\.cc\/m2YK7NSc/);
+  assert.equal((page.match(/https:\/\/i\.postimg\.cc\//g) ?? []).length, 16);
+  assert.match(css, /object-fit:\s*contain/);
+  assert.doesNotMatch(page, /<video\b/i);
   assert.doesNotMatch(page, /depoimento|avaliaç(?:ão|ões)|certificado|mentoria|grupo VIP|garantia/i);
+});
+
+test("implementa o carrossel infinito em duas direções", async () => {
+  const [page, css] = await Promise.all([
+    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+  ]);
+  assert.match(page, /\[\.\.\.row, \.\.\.row\]/);
+  assert.match(page, /move-left/);
+  assert.match(page, /move-right/);
+  assert.match(css, /@keyframes marquee-left/);
+  assert.match(css, /@keyframes marquee-right/);
+  assert.match(css, /\.marquee-image img[\s\S]*object-fit:\s*contain/);
+  assert.doesNotMatch(page, /carousel-controls|slide-copy|slide-placeholder/);
+});
+
+test("inclui o pixel e o script de UTM no head", async () => {
+  const layout = await readFile(new URL("../app/layout.tsx", import.meta.url), "utf8");
+  assert.match(layout, /window\.pixelId="6a7014b9040ae726c2be69eb"/);
+  assert.match(layout, /cdn\.utmify\.com\.br\/scripts\/pixel\/pixel\.js/);
+  assert.match(layout, /cdn\.utmify\.com\.br\/scripts\/utms\/latest\.js/);
+  assert.match(layout, /data-utmify-prevent-xcod-sck/);
+  assert.match(layout, /data-utmify-prevent-subids/);
 });
 
 test("preserva os checkouts e o modal acessível", async () => {
