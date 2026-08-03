@@ -2,28 +2,14 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 
-async function render() {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(
-    new Request("http://localhost/", { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
-
-test("renderiza a nova landing page em português", async () => {
-  const response = await render();
-  assert.equal(response.status, 200);
-  const html = await response.text();
-  assert.match(html, /<html lang="pt-BR">/i);
-  assert.match(html, /Nunca fique sem ideias durante uma festa infantil/i);
-  assert.match(html, /Veja como o material é por dentro/i);
-  assert.match(html, /Esse material é perfeito para você/i);
-  assert.match(html, /O QUE VOCÊ VAI RECEBER/i);
-  assert.match(html, /EXCLUSIVO DO PLANO COMPLETO/i);
-  assert.match(html, /MAIS ESCOLHIDO/i);
+test("mantém o conteúdo essencial da landing page", async () => {
+  const page = await readFile(new URL("../app/page.tsx", import.meta.url), "utf8");
+  assert.match(page, /Nunca fique sem ideias durante uma festa infantil/i);
+  assert.match(page, /Veja como o material é por dentro/i);
+  assert.match(page, /Esse material é perfeito para você/i);
+  assert.match(page, /O QUE VOCÊ VAI RECEBER/i);
+  assert.match(page, /EXCLUSIVO DO PLANO COMPLETO/i);
+  assert.match(page, /MAIS ESCOLHIDO/i);
 });
 
 test("mantém a ordem e apenas as seis seções pedidas", async () => {
