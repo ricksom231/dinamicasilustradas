@@ -62,3 +62,14 @@ test("preserva acessibilidade do modal e rastreamento", async () => {
   assert.match(layout, /cdn\.utmify\.com\.br\/scripts\/pixel\/pixel\.js/);
   assert.match(layout, /cdn\.utmify\.com\.br\/scripts\/utms\/latest\.js/);
 });
+
+test("aplica a hierarquia tipográfica Poppins solicitada", async () => {
+  const [css, layout] = await Promise.all([
+    readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
+  ]);
+  assert.match(layout, /Poppins:wght@400;500;600;700;800;900/);
+  assert.match(css, /\.hero-section h1[\s\S]*font-weight:\s*900/);
+  assert.match(css, /\.hero-highlight[\s\S]*color:\s*var\(--gold\)/);
+  assert.match(css, /\.section-heading h2[\s\S]*text-wrap:\s*balance/);
+});

@@ -34,7 +34,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <script dangerouslySetInnerHTML={{ __html: 'window.pixelId="6a7014b9040ae726c2be69eb";' }} />
         <script src="https://cdn.utmify.com.br/scripts/pixel/pixel.js" async defer />
         <script src="https://cdn.utmify.com.br/scripts/utms/latest.js" async defer data-utmify-prevent-xcod-sck="" data-utmify-prevent-subids="" />
