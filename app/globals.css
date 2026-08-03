@@ -127,6 +127,30 @@ button { cursor: pointer; }
 .complete-button { color: var(--ink); background: var(--gold); box-shadow: 0 12px 28px rgb(11 42 74 / 20%); }
 .choice-badge { position: absolute; top: 0; left: 50%; transform: translate(-50%, -50%); padding: 8px 17px; border-radius: 999px; color: var(--ink); background: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: .1em; white-space: nowrap; }
 
+.guarantee-section { display: flex; align-items: center; justify-content: center; gap: 20px; padding: 54px 20px; color: var(--white); background: var(--blue); text-align: left; }
+.guarantee-seal { width: 104px; height: 104px; display: grid; place-items: center; align-content: center; flex: 0 0 auto; border: 4px solid var(--gold); border-radius: 50%; color: var(--white); background: var(--blue-dark); box-shadow: 0 10px 24px rgb(11 42 74 / 22%); }
+.guarantee-seal strong { font-size: 46px; font-weight: 900; line-height: .85; letter-spacing: -.06em; }
+.guarantee-seal span { margin-top: 7px; color: var(--gold); font-size: 10px; font-weight: 800; letter-spacing: .12em; }
+.guarantee-copy { max-width: 610px; }
+.guarantee-copy .section-kicker { color: var(--gold); }
+.guarantee-copy h2 { max-width: 520px; margin: 8px 0; font-size: clamp(1.85rem, 3.8vw, 3.3rem); font-weight: 900; line-height: 1.02; letter-spacing: -.04em; text-wrap: balance; }
+.guarantee-copy p { max-width: 610px; margin: 0; color: rgb(255 255 255 / 80%); font-size: 14px; line-height: 1.5; }
+
+.faq-section { background: var(--white); }
+.faq-list { width: min(800px, 100%); display: grid; gap: 11px; margin: 0 auto; }
+.faq-list details { overflow: hidden; border: 1px solid rgb(21 101 192 / 14%); border-radius: 15px; background: var(--white); box-shadow: 0 8px 20px rgb(11 42 74 / 5%); }
+.faq-list summary { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 18px; color: var(--ink); cursor: pointer; font-size: 14px; font-weight: 800; line-height: 1.25; list-style: none; }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary span { width: 25px; height: 25px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; color: var(--blue); background: rgb(255 193 7 / 38%); font-size: 20px; font-weight: 500; line-height: 1; transition: transform .18s ease; }
+.faq-list details[open] summary span { transform: rotate(45deg); }
+.faq-list p { max-width: none; margin: -2px 18px 18px; color: rgb(11 42 74 / 69%); font-size: 13px; line-height: 1.55; }
+
+.final-cta { padding: 72px 20px; color: var(--white); background: var(--blue-dark); text-align: center; }
+.final-cta .section-kicker { color: var(--gold); }
+.final-cta h2 { max-width: 850px; margin: 12px auto; font-size: clamp(2rem, 4.2vw, 3.8rem); font-weight: 900; line-height: 1.02; letter-spacing: -.04em; text-wrap: balance; }
+.final-cta p { max-width: 620px; margin: 0 auto 22px; color: rgb(255 255 255 / 78%); font-size: 15px; line-height: 1.5; }
+.final-cta .primary-button { min-width: min(100%, 290px); }
+
 footer { padding: 34px 20px; display: flex; flex-direction: column; align-items: center; gap: 14px; color: var(--white); background: var(--ink); text-align: center; }
 .footer-mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; color: var(--ink); background: var(--gold); font-weight: 800; }
 footer p { max-width: 760px; margin: 0; color: rgb(255 255 255 / 66%); font-size: 11px; }
@@ -155,6 +179,7 @@ footer strong { color: var(--white); }
   .marquee-image { width: 250px; height: 320px; }
   .audience-grid, .kit-grid, .bonus-grid { grid-template-columns: repeat(2, 1fr); }
   .plan-card { padding: 36px; }
+  .guarantee-section { padding: 66px 28px; }
 }
 
 @media (min-width: 900px) {
@@ -172,6 +197,11 @@ footer strong { color: var(--white); }
   .hero-section .hero-subheadline { font-size: clamp(.72rem, 2.8vw, .88rem); line-height: 1.45; }
   .offer-bar-message { gap: 7px; font-size: 10px; }
   .offer-bar-message strong, .offer-bar-message b { font-size: 9px; }
+  .guarantee-section { flex-direction: column; padding: 49px 24px; text-align: center; }
+  .guarantee-seal { width: 94px; height: 94px; }
+  .guarantee-copy h2 { margin-inline: auto; }
+  .guarantee-copy p { font-size: 13px; }
+  .final-cta { padding: 58px 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

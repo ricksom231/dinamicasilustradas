@@ -67,6 +67,14 @@ const basicNotIncluded = ["Roteiro de festa de 2 horas", "Playlist por momento",
 const completeKit = ["200 brincadeiras e dinâmicas completas", "Atividades organizadas em 8 categorias", "Opções para diferentes idades", "Brincadeiras para salão e espaços abertos", "Atividades com ou sem material", "Idade recomendada em cada brincadeira", "Número indicado de crianças", "Material necessário informado", "Tempo médio de cada atividade", "Passo a passo curto e direto", "Consulta pelo celular, tablet ou computador", "Material digital pronto, sem precisar editar"];
 const completeBonuses = ["Roteiro pronto para duas horas de festa", "Variações para festas pequenas, grandes e temáticas", "Playlist dividida por momento do evento", "Checklist completo da Mochila do Recreador", "40 brincadeiras temáticas extras", "Cinco grupos de festas temáticas", "Acesso digital imediato após o pagamento"];
 
+const faqs = [
+  { question: "Como recebo o material?", answer: "O acesso é digital e liberado após a confirmação do pagamento. Você pode abrir no celular, tablet ou computador." },
+  { question: "Sou iniciante. Vou conseguir aplicar?", answer: "Sim. Cada brincadeira traz idade, número de crianças, materiais, tempo médio e um passo a passo objetivo." },
+  { question: "Preciso imprimir tudo?", answer: "Não. O conteúdo pode ser consultado no celular para encontrar rapidamente uma opção adequada ao momento." },
+  { question: "Existe garantia?", answer: "Sim. Você tem 7 dias para conhecer o material e solicitar o reembolso caso ele não faça sentido para você." },
+  { question: "O acesso expira?", answer: "O material é entregue em formato digital para download. Guarde o arquivo nos seus dispositivos para consultar quando precisar." },
+];
+
 function Icon({ name }: { name: IconName }) {
   return <svg className="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{iconPaths[name]}</svg>;
 }
@@ -292,6 +300,37 @@ export default function Home() {
             <a className="plan-button complete-button" href={COMPLETE_CHECKOUT_URL}>QUERO O PLANO COMPLETO</a>
           </article>
         </div>
+      </section>
+
+      <section className="guarantee-section scroll-reveal">
+        <div className="guarantee-seal" aria-hidden="true"><strong>7</strong><span>DIAS</span></div>
+        <div className="guarantee-copy">
+          <span className="section-kicker">SUA ESCOLHA PROTEGIDA</span>
+          <h2>Teste o kit por 7 dias.</h2>
+          <p>Conheça o material com calma. Se não fizer sentido para você, solicite o reembolso dentro do prazo de garantia.</p>
+        </div>
+      </section>
+
+      <section className="faq-section section-shell scroll-reveal">
+        <div className="section-heading">
+          <span className="section-kicker">DÚVIDAS FREQUENTES</span>
+          <h2>O que você precisa saber antes de começar.</h2>
+        </div>
+        <div className="faq-list">
+          {faqs.map((item) => (
+            <details key={item.question}>
+              <summary>{item.question}<span aria-hidden="true">+</span></summary>
+              <p>{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
+      <section className="final-cta scroll-reveal">
+        <span className="section-kicker">SUA PRÓXIMA FESTA PODE SER MAIS LEVE</span>
+        <h2>Tenha sempre uma boa brincadeira pronta para puxar.</h2>
+        <p>Abra o kit, escolha uma opção adequada e conduza com confiança.</p>
+        <a className="primary-button" href="#planos">ESCOLHER MEU PLANO</a>
       </section>
 
       <footer>
